@@ -1,0 +1,83 @@
+spring:
+  datasource:
+    url: ${DATA_SOURCE_URL:jdbc:postgresql://localhost:5433/library}
+    username: ${DATA_SOURCE_USERNAME:postgres}
+    password: ${DATA_SOURCE_PASSWORD:postgres}
+    driver-class-name: org.postgresql.Driver
+
+  output:
+    ansi:
+      enabled: ALWAYS
+
+  #  jpa:
+  #    hibernate:
+  #      ddl-auto: update, none, create-drop
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    properties:
+      hibernate.format_sql: true
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${GOOGLE_CLIENT_ID}
+            client-secret: ${GOOGLE_CLIENT_SECRET}
+
+springdoc:
+  override-with-generic-response: false
+
+logging:
+  pattern:
+    console: '%clr(%d{dd-MM-yyyy HH:mm:ss}){faint} %clr(%5p) %clr([%t]){faint} %clr(%-40.40logger){cyan} %clr(:){yellow} %m%n'
+  file:
+    name: library-api-logs.log
+  level:
+    root: warn
+    com:
+      example: trace
+    org:
+      springframework:
+        web: debug
+        security: trace
+
+# trace
+# debug
+# info
+# warn
+# error
+
+management:
+  server:
+    port: 9090
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+---
+spring:
+  config:
+    activate:
+      on-profile: producao
+  jpa:
+    show-sql: false
+  datasource:
+    url: ${DATA_SOURCE_URL_PROD}
+    username: ${DATA_SOURCE_USERNAME_PROD}
+    password: ${DATA_SOURCE_PASSWORD_PROD}
+    driver-class-name: org.postgresql.Driver
+
+
+---
+spring:
+  config:
+    activate:
+      on-profile: homologacao
+  jpa:
+    show-sql: false
+
+
+
